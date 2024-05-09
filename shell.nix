@@ -6,7 +6,8 @@ in
 pkgs.mkShellNoCC {
   packages = with pkgs; [
     kubectl
-    microk8s
+    k3d
     argocd
+    docker
   ];
 }
