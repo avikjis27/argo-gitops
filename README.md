@@ -1,3 +1,6 @@
+# Practicing ArgoCD
+
+## Part 1 | Installing ArgoCD in local k3d cluster
 ### Clean up docker images and containers
 <details>
 <summary>commands</summary>
@@ -71,4 +74,19 @@ Now access the application in the browser `http://localhost:8000/`
 ## To delete app
 ```
 argocd app delete argocd/nodejs-webapp
+```
+
+## Create a helm application in argocd
+
+```bash
+argocd app create nodejs-webapp-helm --repo https://github.com/avikjis27/demo-apps.git --revision main --path nodejs-webapp/helm/nodeapp-helm --dest-namespace helm --dest-server https://kubernetes.default.svc  --values 'values-deployment.yaml' --sync-option CreateNamespace=true
+argocd app sync argocd/nodejs-webapp-helm
+kubectl port-forward service/nodejs-webapp-helm-nodeapp-helm -n helm 8000:8080
+
+```
+Now access the application in the browser `http://localhost:8000/`
+
+## To delete app
+```
+argocd app delete argocd/nodejs-webapp-helm
 ```

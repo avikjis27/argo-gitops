@@ -1,0 +1,26 @@
+#https://github.com/argoproj/argo-cd/blob/master/manifests/crds/application-crd.yaml
+#https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nodejs-webapp-helm
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/avikjis27/demo-apps.git
+    path: nodejs-webapp/helm/nodeapp-helm
+    targetRevision: main
+    helm:
+      releaseName: nodejs-webapp
+      valueFiles: 
+        - values-deployment.yaml
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: helm
+  syncPolicy:
+    syncOptions:
+    - createNamespace=true
+    automated:
+      selfHeal: true
+      prune: true
